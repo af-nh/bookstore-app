@@ -2,38 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class BookController extends Controller
 {
-    public function show($id)
-{
-    return "Book ID: " . $id;
-}
-    public function index()
+    public function index(Request $request): View
     {
+        $books = Book::with('author', 'categories')
+            ->when($request->category, function ($query, $categoryId) {
+                $query->whereHas('categories', function ($q) use ($categoryId) {
+                    $q->where('categories.id', $categoryId);
+                });
+            })
+            ->latest()
+            ->paginate(12);
 
-        $books = [
-            [
-                'id' => 1,
-                'title' => 'Clean Code',
-                'author' => 'Robert',
-                'price' => 30,
-            ],
-            [
-                'id' => 2,
-                'title' => 'Prog',
-                'author' => 'andrew',
-                'price' => 35,
-            ],
-            [
-                'id' => 3,
-                'title' => 'Design Patterns',
-                'author' => 'Erich Gamma',
-                'price' => 40
-            ]
-        ];
-        
-        return view('books.index', compact('books'));
+        $categories = Category::orderBy('name')->get();
+
+        return view('books.index', compact('books', 'categories'));
+    }
+
+    public function show(Book $book): View
+    {
+        $book->load('author', 'categories');
+
+        return view('books.show', compact('book'));
     }
 }
