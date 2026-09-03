@@ -26,7 +26,18 @@
                 {{ $book->stock > 0 ? $book->stock . ' in stock' : 'Out of stock' }}
             </span>
         </div>
-
+        <div class="mt-6 pt-6 border-t border-gray-100">
+    @if ($book->stock > 0)
+        <form action="{{ route('cart.add', $book) }}" method="POST" class="flex items-center gap-3">
+            @csrf
+            <input type="number" name="quantity" value="1" min="1" max="{{ $book->stock }}"
+                   class="w-20 border border-gray-300 rounded-lg px-3 py-2">
+            <button type="submit" class="bg-blue-600 text-white px-5 py-2 rounded-lg">Add to cart</button>
+        </form>
+    @else
+        <p class="text-red-500 text-sm">Out of stock</p>
+    @endif
+</div>
         <div class="mt-6 pt-6 border-t border-gray-100">
             <h3 class="text-sm font-semibold text-gray-500 mb-1">About the author</h3>
             <p class="text-gray-600 text-sm">{{ $book->author->bio }}</p>
