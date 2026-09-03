@@ -12,7 +12,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(CategorySeeder::class);
-        $this->call(AdminSeeder::class);
 
         Author::factory(10)->create()->each(function (Author $author) {
             Book::factory(rand(2, 5))->create(['author_id' => $author->id])
