@@ -1,30 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>@yield('title', 'BookStore')</title>
+    <title>@yield('title', 'The Bindery')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="bg-parchment text-ink min-h-screen flex flex-col">
 
-    <header class="bg-gray-800 text-white shadow">
-    <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-        <h1 class="text-xl font-bold">
-            <a href="{{ url('/') }}">📚 My BookStore App</a>
-        </h1>
+    <header class="bg-forest text-paper border-b-2 border-brass">
+        <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="{{ route('books.index') }}" class="font-display text-2xl font-semibold tracking-tight">
+                The Bindery
+            </a>
 
-        <div class="flex gap-6">
-            <a href="{{ url('/books') }}" class="hover:text-gray-300 transition">Books</a>
-            <a href="{{ url('/login') }}" class="hover:text-gray-300 transition">Login</a>
-        </div>
-    </nav>
-</header>
+            <div class="flex items-center gap-6 text-sm">
+                <a href="{{ route('books.index') }}" class="hover:text-brass-light transition">Books</a>
 
-    <main>
+                <a href="{{ route('cart.index') }}" class="hover:text-brass-light transition">
+                    Cart
+                    @if (session('cart') && count(session('cart')) > 0)
+                        <span class="bg-brass text-forest-dark text-xs font-semibold rounded-full px-2 py-0.5 ml-1">{{ count(session('cart')) }}</span>
+                    @endif
+                </a>
+
+                @auth
+                    <a href="{{ route('account.index') }}" class="hover:text-brass-light transition">My Account</a>
+
+                    @if (auth()->user()->role === 'admin')
+                        <a href="{{ route('dashboard.index') }}" class="hover:text-brass-light transition">Dashboard</a>
+                    @endif
+
+                    <span class="text-brass-light/80">{{ auth()->user()->name }}</span>
+
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="hover:text-brass-light transition">Logout</button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="hover:text-brass-light transition">Login</a>
+                    <a href="{{ route('register') }}" class="hover:text-brass-light transition">Register</a>
+                @endauth
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-1">
         @yield('content')
     </main>
 
-    <footer>
-        <p>&copy; 2026 BookStore</p>
+    <footer class="border-t border-line mt-16">
+        <p class="max-w-6xl mx-auto px-4 py-6 text-sm text-ink-soft">The Bindery, est. 2026 — a shelf of good books.</p>
     </footer>
 
 </body>
