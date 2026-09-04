@@ -33,7 +33,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('books.index')->with('success', 'Welcome, ' . $user->name . '!');
+        return redirect()->route('account.index')->with('success', 'Welcome, ' . $user->name . '!');
     }
 
     public function showLogin(): View
@@ -54,7 +54,9 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('books.index'))->with('success', 'Logged in successfully.');
+        $destination = $request->user()->role === 'admin' ? route('dashboard.index') : route('account.index');
+
+        return redirect()->intended($destination)->with('success', 'Logged in successfully.');
     }
 
     public function logout(Request $request): RedirectResponse
