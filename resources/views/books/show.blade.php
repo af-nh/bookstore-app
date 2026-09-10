@@ -7,15 +7,27 @@
     </a>
 
     <div class="bg-paper border border-line border-l-4 border-l-brass p-8">
-        <h1 class="font-display text-3xl font-semibold text-ink mb-1">{{ $book->title }}</h1>
-        <p class="text-ink-soft mb-4">by {{ $book->author->name }}</p>
+        <div class="flex gap-6 mb-6">
+            @if ($book->cover_image)
+                <img src="{{ $book->coverUrl() }}" alt="{{ $book->title }}" class="w-28 aspect-[2/3] object-cover border border-line flex-shrink-0">
+            @else
+                <div class="w-28 aspect-[2/3] bg-forest/5 border border-line flex items-center justify-center flex-shrink-0">
+                    <span class="font-display text-4xl text-brass">{{ substr($book->title, 0, 1) }}</span>
+                </div>
+            @endif
 
-        <div class="flex flex-wrap gap-1.5 mb-6">
-            @foreach ($book->categories as $category)
-                <span class="text-xs text-forest border border-forest/30 px-2 py-0.5 rounded-sm">
-                    {{ $category->name }}
-                </span>
-            @endforeach
+            <div class="min-w-0">
+                <h1 class="font-display text-3xl font-semibold text-ink mb-1">{{ $book->title }}</h1>
+                <p class="text-ink-soft mb-4">by {{ $book->author->name }}</p>
+
+                <div class="flex flex-wrap gap-1.5">
+                    @foreach ($book->categories as $category)
+                        <span class="text-xs text-forest border border-forest/30 px-2 py-0.5 rounded-sm">
+                            {{ $category->name }}
+                        </span>
+                    @endforeach
+                </div>
+            </div>
         </div>
 
         <p class="text-ink leading-relaxed mb-6">{{ $book->description }}</p>

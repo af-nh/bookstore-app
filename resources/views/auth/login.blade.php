@@ -15,7 +15,10 @@
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-ink-soft mb-1">Password</label>
+            <div class="flex items-center justify-between mb-1">
+                <label class="block text-sm font-medium text-ink-soft">Password</label>
+                <a href="{{ route('password.request') }}" class="text-xs text-forest hover:text-brass transition">Forgot password?</a>
+            </div>
             <input type="password" name="password"
                    class="w-full border border-line rounded-sm px-3 py-2 bg-white">
             @error('password') <p class="text-sm text-clay mt-1">{{ $message }}</p> @enderror

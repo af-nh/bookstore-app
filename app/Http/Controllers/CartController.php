@@ -115,6 +115,6 @@ class CartController extends Controller
 
         session()->forget('cart');
 
-        return redirect()->route('books.index')->with('success', 'Order #' . $order->id . ' placed! Thanks for your purchase.');
+        return redirect()->route('orders.show', $order)->with('success', 'Order placed successfully!');
     }
 }
