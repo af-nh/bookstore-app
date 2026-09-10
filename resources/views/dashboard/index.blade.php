@@ -9,22 +9,29 @@
         </a>
     </div>
 
+    <div class="flex flex-wrap gap-2 mb-8">
+        <a href="{{ route('dashboard.books.index') }}" class="px-4 py-1.5 rounded-sm text-sm border border-line text-ink-soft hover:border-forest hover:text-ink transition">Manage books</a>
+        <a href="{{ route('dashboard.authors.index') }}" class="px-4 py-1.5 rounded-sm text-sm border border-line text-ink-soft hover:border-forest hover:text-ink transition">Manage authors</a>
+        <a href="{{ route('dashboard.categories.index') }}" class="px-4 py-1.5 rounded-sm text-sm border border-line text-ink-soft hover:border-forest hover:text-ink transition">Manage categories</a>
+        <a href="{{ route('dashboard.orders.index') }}" class="px-4 py-1.5 rounded-sm text-sm border border-line text-ink-soft hover:border-forest hover:text-ink transition">View all orders</a>
+    </div>
+
     @if (session('success'))
         <div class="bg-forest/10 text-forest border border-forest/30 rounded-sm px-4 py-3 mb-6 text-sm">
             {{ session('success') }}
         </div>
     @endif
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
         <div class="bg-paper border border-line border-l-4 border-l-brass p-5">
             <p class="text-sm text-ink-soft mb-1">Total books</p>
             <p class="font-display text-2xl font-semibold text-ink">{{ $stats['totalBooks'] }}</p>
         </div>
 
-        <div class="bg-paper border border-line border-l-4 border-l-brass p-5">
+        <a href="{{ route('dashboard.authors.index') }}" class="bg-paper border border-line border-l-4 border-l-brass p-5 hover:border-l-forest transition">
             <p class="text-sm text-ink-soft mb-1">Total authors</p>
             <p class="font-display text-2xl font-semibold text-ink">{{ $stats['totalAuthors'] }}</p>
-        </div>
+        </a>
 
         <div class="bg-paper border border-line border-l-4 {{ $stats['lowStockCount'] > 0 ? 'border-l-clay' : 'border-l-brass' }} p-5">
             <p class="text-sm text-ink-soft mb-1">Low stock (&lt; 5)</p>
@@ -37,9 +44,22 @@
             <p class="text-sm text-ink-soft mb-1">Total catalog value</p>
             <p class="font-display text-2xl font-semibold text-ink">${{ number_format($stats['totalStockValue'], 2) }}</p>
         </div>
+
+        <a href="{{ route('dashboard.orders.index') }}" class="bg-paper border border-line border-l-4 border-l-brass p-5 hover:border-l-forest transition">
+            <p class="text-sm text-ink-soft mb-1">Orders placed</p>
+            <p class="font-display text-2xl font-semibold text-ink">{{ $stats['totalOrders'] }}</p>
+        </a>
+
+        <a href="{{ route('dashboard.orders.index') }}" class="bg-paper border border-line border-l-4 border-l-brass p-5 hover:border-l-forest transition">
+            <p class="text-sm text-ink-soft mb-1">Total revenue</p>
+            <p class="font-display text-2xl font-semibold text-ink">${{ number_format($stats['totalRevenue'], 2) }}</p>
+        </a>
     </div>
 
-    <h2 class="font-display text-xl font-semibold text-ink mb-4">Recently added books</h2>
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="font-display text-xl font-semibold text-ink">Recently added books</h2>
+        <a href="{{ route('dashboard.books.index') }}" class="text-sm text-forest hover:text-brass transition">Manage all books &rarr;</a>
+    </div>
 
     <div class="bg-paper border border-line overflow-hidden">
         <table class="w-full text-left">

@@ -12,13 +12,20 @@ class BookController extends Controller
     public function index(Request $request): View
     {
         $books = Book::with('author', 'categories')
+            ->when($request->search, function ($query, $search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhereHas('author', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+            })
             ->when($request->category, function ($query, $categoryId) {
                 $query->whereHas('categories', function ($q) use ($categoryId) {
                     $q->where('categories.id', $categoryId);
                 });
             })
             ->latest()
-            ->paginate(12);
+            ->paginate(12)
+            ->withQueryString();
 
         $categories = Category::orderBy('name')->get();
 

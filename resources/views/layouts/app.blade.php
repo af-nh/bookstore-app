@@ -27,6 +27,7 @@
 
                     @if (auth()->user()->role === 'admin')
                         <a href="{{ route('dashboard.index') }}" class="hover:text-brass-light transition">Dashboard</a>
+                        <a href="{{ route('dashboard.orders.index') }}" class="hover:text-brass-light transition">Orders</a>
                     @endif
 
                     <span class="text-brass-light/80">{{ auth()->user()->name }}</span>
